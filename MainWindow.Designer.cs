@@ -34,6 +34,7 @@
          this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
          this.pathBox = new System.Windows.Forms.TextBox();
          this.updateTimer = new System.Windows.Forms.Timer(this.components);
+         this.fileTimer = new System.Windows.Forms.Timer(this.components);
          this.SuspendLayout();
          // 
          // labelInstructions
@@ -41,9 +42,9 @@
          this.labelInstructions.AutoSize = true;
          this.labelInstructions.Location = new System.Drawing.Point(12, 55);
          this.labelInstructions.Name = "labelInstructions";
-         this.labelInstructions.Size = new System.Drawing.Size(380, 13);
+         this.labelInstructions.Size = new System.Drawing.Size(370, 13);
          this.labelInstructions.TabIndex = 0;
-         this.labelInstructions.Text = "Double-click (while FTL is on main menu) to load; Click to rename; Del to delete";
+         this.labelInstructions.Text = "Double-click (while on FTL main menu) to load; Click to rename; Del to delete";
          // 
          // saveList
          // 
@@ -57,7 +58,7 @@
          this.saveList.Location = new System.Drawing.Point(12, 85);
          this.saveList.MultiSelect = false;
          this.saveList.Name = "saveList";
-         this.saveList.Size = new System.Drawing.Size(417, 719);
+         this.saveList.Size = new System.Drawing.Size(370, 719);
          this.saveList.Sorting = System.Windows.Forms.SortOrder.Descending;
          this.saveList.TabIndex = 1;
          this.saveList.UseCompatibleStateImageBehavior = false;
@@ -77,9 +78,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
          this.pathBox.Location = new System.Drawing.Point(12, 12);
          this.pathBox.Name = "pathBox";
-         this.pathBox.Size = new System.Drawing.Size(417, 20);
+         this.pathBox.Size = new System.Drawing.Size(370, 20);
          this.pathBox.TabIndex = 2;
-         this.pathBox.Text = "%userprofile%\\Documents\\My Games\\FasterThanLight\\continue.sav";
+         this.pathBox.Text = "%userprofile%\\Documents\\My Games\\FasterThanLight";
          this.pathBox.TextChanged += new System.EventHandler(this.pathBox_TextChanged);
          // 
          // updateTimer
@@ -87,11 +88,16 @@
          this.updateTimer.Interval = 250;
          this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
          // 
+         // fileTimer
+         // 
+         this.fileTimer.Interval = 1000;
+         this.fileTimer.Tick += new System.EventHandler(this.fileTimer_Tick);
+         // 
          // MainWindow
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(441, 816);
+         this.ClientSize = new System.Drawing.Size(394, 816);
          this.Controls.Add(this.pathBox);
          this.Controls.Add(this.saveList);
          this.Controls.Add(this.labelInstructions);
@@ -111,6 +117,7 @@
       private System.Windows.Forms.ColumnHeader columnName;
       private System.Windows.Forms.TextBox pathBox;
       private System.Windows.Forms.Timer updateTimer;
+      private System.Windows.Forms.Timer fileTimer;
    }
 }
 

@@ -48,19 +48,32 @@ namespace FtlSaveScummer
 
       void fileChanged(object sender, FileSystemEventArgs e) { Invoke(new Action(()=>updateTimer.Start())); }
 
-      void pathBox_TextChanged(object sender, EventArgs e)
+      void watchFile(string path)
       {
          if (watcher != null) watcher.EnableRaisingEvents = false;
          watcher = null;
 
-         var file = new FileInfo(Environment.ExpandEnvironmentVariables(pathBox.Text));
+         var file = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables(path), "continue.sav"));
          if (!file.Exists) return;
+
          saveLocation = file;
 
          watcher = new FileSystemWatcher(file.DirectoryName, file.Name);
          watcher.NotifyFilter = NotifyFilters.LastWrite;
          watcher.Changed += fileChanged;
          watcher.EnableRaisingEvents = true;
+      }
+
+      void pathBox_TextChanged(object sender, EventArgs e)
+      {
+         watchFile(pathBox.Text);
+         if (watcher == null) fileTimer.Start();
+      }
+
+      private void fileTimer_Tick(object sender, EventArgs e)
+      {
+         if (watcher == null) watchFile(pathBox.Text);
+         if (watcher != null) fileTimer.Stop();
       }
 
       void updateTimer_Tick(object sender, EventArgs e)
