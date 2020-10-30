@@ -63,9 +63,9 @@
          this.saveList.TabIndex = 1;
          this.saveList.UseCompatibleStateImageBehavior = false;
          this.saveList.View = System.Windows.Forms.View.List;
-         this.saveList.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.saveList_AfterLabelEdit);
-         this.saveList.ItemActivate += new System.EventHandler(this.saveList_ItemActivate);
-         this.saveList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.saveList_KeyUp);
+         this.saveList.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.SaveList_AfterLabelEdit);
+         this.saveList.ItemActivate += new System.EventHandler(this.SaveList_ItemActivate);
+         this.saveList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SaveList_KeyUp);
          // 
          // columnName
          // 
@@ -81,17 +81,17 @@
          this.pathBox.Size = new System.Drawing.Size(370, 20);
          this.pathBox.TabIndex = 2;
          this.pathBox.Text = "%userprofile%\\Documents\\My Games\\FasterThanLight";
-         this.pathBox.TextChanged += new System.EventHandler(this.pathBox_TextChanged);
+         this.pathBox.TextChanged += new System.EventHandler(this.PathBox_TextChanged);
          // 
          // updateTimer
          // 
          this.updateTimer.Interval = 250;
-         this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+         this.updateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
          // 
          // fileTimer
          // 
          this.fileTimer.Interval = 1000;
-         this.fileTimer.Tick += new System.EventHandler(this.fileTimer_Tick);
+         this.fileTimer.Tick += new System.EventHandler(this.FileTimer_Tick);
          // 
          // MainWindow
          // 

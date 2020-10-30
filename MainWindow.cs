@@ -7,7 +7,7 @@ namespace FtlSaveScummer
 {
    public partial class MainWindow : Form
    {
-      DirectoryInfo ourSaves = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FtlSaveScummer"));
+      readonly DirectoryInfo ourSaves = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FtlSaveScummer"));
       FileInfo saveLocation;
       FileSystemWatcher watcher;
       DateTime lastCopy = DateTime.MinValue;
@@ -42,13 +42,13 @@ namespace FtlSaveScummer
 
       void MainWindow_Load(object sender, EventArgs e)
       {
-         pathBox_TextChanged(this, new EventArgs());
+         PathBox_TextChanged(this, new EventArgs());
          PopulateList();
       }
 
-      void fileChanged(object sender, FileSystemEventArgs e) { Invoke(new Action(()=>updateTimer.Start())); }
+      void FileChanged(object sender, FileSystemEventArgs e) => Invoke(new Action(() => updateTimer.Start()));
 
-      void watchFile(string path)
+      void WatchFile(string path)
       {
          if (watcher != null) watcher.EnableRaisingEvents = false;
          watcher = null;
@@ -58,25 +58,27 @@ namespace FtlSaveScummer
 
          saveLocation = file;
 
-         watcher = new FileSystemWatcher(file.DirectoryName, file.Name);
-         watcher.NotifyFilter = NotifyFilters.LastWrite;
-         watcher.Changed += fileChanged;
-         watcher.EnableRaisingEvents = true;
+         watcher = new FileSystemWatcher(file.DirectoryName, file.Name)
+         {
+            NotifyFilter = NotifyFilters.LastWrite,
+            EnableRaisingEvents = true
+         };
+         watcher.Changed += FileChanged;
       }
 
-      void pathBox_TextChanged(object sender, EventArgs e)
+      void PathBox_TextChanged(object sender, EventArgs e)
       {
-         watchFile(pathBox.Text);
+         WatchFile(pathBox.Text);
          if (watcher == null) fileTimer.Start();
       }
 
-      private void fileTimer_Tick(object sender, EventArgs e)
+      private void FileTimer_Tick(object sender, EventArgs e)
       {
-         if (watcher == null) watchFile(pathBox.Text);
+         if (watcher == null) WatchFile(pathBox.Text);
          if (watcher != null) fileTimer.Stop();
       }
 
-      void updateTimer_Tick(object sender, EventArgs e)
+      void UpdateTimer_Tick(object sender, EventArgs e)
       {
          if (saveLocation == null || !saveLocation.Exists) { updateTimer.Enabled = false; return; }
 
@@ -94,7 +96,7 @@ namespace FtlSaveScummer
          PopulateList();
       }
 
-      void saveList_AfterLabelEdit(object sender, LabelEditEventArgs e)
+      void SaveList_AfterLabelEdit(object sender, LabelEditEventArgs e)
       {
          try
          {
@@ -107,7 +109,7 @@ namespace FtlSaveScummer
          catch { e.CancelEdit = true; }
       }
 
-      void saveList_ItemActivate(object sender, EventArgs e)
+      void SaveList_ItemActivate(object sender, EventArgs e)
       {
          var activated = FileFromLabel(saveList.SelectedItems[0].Text);
          if (!activated.Exists) return;
@@ -116,7 +118,7 @@ namespace FtlSaveScummer
          activated.CopyTo(saveLocation.FullName, true);
       }
 
-      void saveList_KeyUp(object sender, KeyEventArgs e)
+      void SaveList_KeyUp(object sender, KeyEventArgs e)
       {
          if (e.KeyCode != Keys.Delete && e.KeyCode != Keys.Back) return;
          if (saveList.SelectedItems.Count != 1) return;
