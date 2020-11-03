@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>appIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -48,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KeyboardListener.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\beam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bomb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drone1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drone2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\laser1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\laser2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\missile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appIcon.ico" />
+    <None Include="Resources\bell.wav" />
+    <None Include="Resources\load.png" />
+    <None Include="Resources\broom.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

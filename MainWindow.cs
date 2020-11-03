@@ -1,6 +1,12 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using FtlSaveScummer.Properties;
+using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Media;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace FtlSaveScummer
@@ -8,18 +14,32 @@ namespace FtlSaveScummer
    public partial class MainWindow : Form
    {
       readonly DirectoryInfo ourSaves = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FtlSaveScummer"));
-      FileInfo saveLocation;
-      FileSystemWatcher watcher;
+      FileInfo SaveLocation => new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables(pathBox.Text), "continue.sav"));
+
       DateTime lastCopy = DateTime.MinValue;
+
+      readonly SoundPlayer loadSound = new SoundPlayer(Resources.bell);
 
       public MainWindow()
       {
          if (!ourSaves.Exists) ourSaves.Create();
          InitializeComponent();
+
+         Text += $" v{Application.ProductVersion.Substring(0, Application.ProductVersion.IndexOf('.'))}";
+
+         void Add(string b) => iconSet.Images.Add(b, (Bitmap)Resources.ResourceManager.GetObject(b));
+         string[] iconList = { "laser1", "laser2", "ion", "beam", "missile", "bomb", "drone1", "drone2" };
+         foreach (var s in iconList) Add(s);
       }
 
-      FileInfo FileFromLabel(string label) { return new FileInfo(Path.Combine(ourSaves.FullName, label.Replace(':', '_') + ".sav")); }
-      static string LabelFromFile(FileInfo file) { return file.Name.Substring(0, file.Name.Length - file.Extension.Length).Replace('_', ':'); }
+      FileInfo FileFromLabel(string label) => new FileInfo(Path.Combine(ourSaves.FullName, label.Replace(':', '_') + ".sav"));
+      static string LabelFromFile(FileInfo file) => Path.GetFileNameWithoutExtension(file.Name).Replace('_', ':');
+
+      static readonly Regex DefaultName = new Regex("^\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d$");
+      static readonly Regex Tagged = new Regex("\\[(.+)\\]");
+
+      ListViewItem SelectedOrFirstNonDefault => saveList.SelectedItems.Count == 1 ? saveList.SelectedItems[0] : (from ListViewItem i in saveList.Items where !DefaultName.IsMatch(i.Text) select i).FirstOrDefault();
+      ListViewItem SelectedOrTop => saveList.SelectedItems.Count == 1 ? saveList.SelectedItems[0] : (saveList.Items.Count == 0 ? null : saveList.Items[0]);
 
       void PopulateList()
       {
@@ -27,7 +47,13 @@ namespace FtlSaveScummer
 
          saveList.BeginUpdate();
          saveList.Clear();
-         foreach (var save in ourSaves.EnumerateFiles("*.sav")) saveList.Items.Add(LabelFromFile(save));
+         foreach (var save in ourSaves.EnumerateFiles("*.sav"))
+         {
+            var item = saveList.Items.Add(LabelFromFile(save));
+
+            var match = Tagged.Match(item.Text);
+            if (match.Success) item.ImageKey = match.Groups[1].Value;
+         }
 
          if (!string.IsNullOrWhiteSpace(selected))
          {
@@ -48,51 +74,29 @@ namespace FtlSaveScummer
 
       void FileChanged(object sender, FileSystemEventArgs e) => Invoke(new Action(() => updateTimer.Start()));
 
-      void WatchFile(string path)
-      {
-         if (watcher != null) watcher.EnableRaisingEvents = false;
-         watcher = null;
-
-         var file = new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables(path), "continue.sav"));
-         if (!file.Exists) return;
-
-         saveLocation = file;
-
-         watcher = new FileSystemWatcher(file.DirectoryName, file.Name)
-         {
-            NotifyFilter = NotifyFilters.LastWrite,
-            EnableRaisingEvents = true
-         };
-         watcher.Changed += FileChanged;
-      }
-
       void PathBox_TextChanged(object sender, EventArgs e)
       {
-         WatchFile(pathBox.Text);
-         if (watcher == null) fileTimer.Start();
-      }
-
-      private void FileTimer_Tick(object sender, EventArgs e)
-      {
-         if (watcher == null) WatchFile(pathBox.Text);
-         if (watcher != null) fileTimer.Stop();
+         var folder = SaveLocation.DirectoryName;
+         if (!Directory.Exists(folder)) return;
+         watcher.Path = folder;
       }
 
       void UpdateTimer_Tick(object sender, EventArgs e)
       {
-         if (saveLocation == null || !saveLocation.Exists) { updateTimer.Enabled = false; return; }
+         var path = SaveLocation;
+         if (path == null || !path.Exists) { updateTimer.Enabled = false; return; }
 
          // Don't echo our own changes back
          var sinceLastCopy = DateTime.UtcNow - lastCopy;
          if (sinceLastCopy.TotalSeconds < 2) { updateTimer.Enabled = false; return; }
 
          // Wait a little while for the file system to settle down
-         var sinceLastWrite = DateTime.UtcNow - saveLocation.LastWriteTimeUtc;
+         var sinceLastWrite = DateTime.UtcNow - path.LastWriteTimeUtc;
          if (sinceLastWrite.TotalMilliseconds < 450) return;
 
          updateTimer.Enabled = false;
 
-         saveLocation.CopyTo(FileFromLabel(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")).FullName, true);
+         path.CopyTo(FileFromLabel(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")).FullName, true);
          PopulateList();
       }
 
@@ -107,16 +111,29 @@ namespace FtlSaveScummer
             before.MoveTo(after.FullName);
          }
          catch { e.CancelEdit = true; }
+
+         string imageKey = null;
+
+         var match = Tagged.Match(e.Label);
+         if (match.Success) imageKey = match.Groups[1].Value;
+
+         saveList.Items[e.Item].ImageKey = imageKey;
       }
 
-      void SaveList_ItemActivate(object sender, EventArgs e)
+      void LoadState(string label)
       {
-         var activated = FileFromLabel(saveList.SelectedItems[0].Text);
-         if (!activated.Exists) return;
+         if (label == null) return;
+
+         var file = FileFromLabel(label);
+         if (!file.Exists) return;
 
          lastCopy = DateTime.UtcNow;
-         activated.CopyTo(saveLocation.FullName, true);
+         file.CopyTo(SaveLocation.FullName, true);
+         loadSound.Play();
       }
+
+      void SaveList_ItemActivate(object sender, EventArgs e) => LoadState(saveList.SelectedItems[0].Text);
+      void LoadClick(object sender, EventArgs e) => LoadState(SelectedOrFirstNonDefault?.Text ?? null);
 
       void SaveList_KeyUp(object sender, KeyEventArgs e)
       {
@@ -128,5 +145,77 @@ namespace FtlSaveScummer
 
          PopulateList();
       }
+
+      private void CleanupClick(object sender, EventArgs e)
+      {
+         foreach (var save in ourSaves.EnumerateFiles("*.sav"))
+            if (DefaultName.IsMatch(LabelFromFile(save))) FileSystem.DeleteFile(save.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+
+         PopulateList();
+      }
+
+      void GlobalUp(object sender, KeyEventArgs e)
+      {
+         List<string>[,] tags = {
+            { new List<string>{ "laser1", "laser2" }, new List<string>{ "ion", "beam" }, new List<string>{ "missile", "bomb" }, new List<string>{ "drone1", "drone2" } },
+            { new List<string>{ }, new List<string>{ }, new List<string>{ }, new List<string>{ } },
+            { new List<string>{ }, new List<string>{ }, new List<string>{ }, new List<string>{ } }   
+         };
+
+         switch (e.KeyCode)
+         {
+            case Keys.F20:
+            case Keys.F21:
+            case Keys.F22:
+            case Keys.F23:
+               int c = e.KeyCode - Keys.F20;
+               int r = 0 + (e.Shift ? 1 : 0) + (e.Control ? 1 : 0) - (e.Shift && e.Control ? 1 : 0);
+
+               var tagList = tags[r, c];
+               if (tagList.Count == 0) return;
+               SetTag(tagList);
+               break;
+
+            case Keys.F24:
+               if (e.Shift) CleanupClick(sender, e);
+               if (e.Control) LoadClick(sender, e);
+               break;
+         }
+      }
+
+      void SetTag(List<string> tagList)
+      {
+         var item = SelectedOrTop;
+
+         string tag = tagList[0];
+         string newLabel = $"{item.Text.Trim()} [{tag}]";
+
+         var match = Tagged.Match(item.Text);
+         if (match.Success)
+         {
+            var g = match.Groups[1];
+
+            tag = tagList[(tagList.IndexOf(g.Value) + 1) % tagList.Count];
+            newLabel = $"{item.Text.Substring(0, g.Index)}{tag}{item.Text.Substring(g.Index + g.Length)}";
+         }
+
+         var before = FileFromLabel(item.Text);
+         if (!before.Exists) return;
+
+         var after = FileFromLabel(newLabel);
+         before.MoveTo(after.FullName);
+
+         item.Text = newLabel;
+         item.ImageKey = tag;
+      }
+
+      void TagClick(object sender, EventArgs e)
+      {
+         var tag = (string)(sender as Button)?.Tag ?? null;
+         if (tag == null) return;
+
+         SetTag(new List<string>{ tag });
+      }
+
    }
 }
