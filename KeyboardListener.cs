@@ -14,9 +14,10 @@ public class KeyboardListener : Component
    public event KeyEventHandler KeyUp { add { EnsureSubscribed(); Up += value; } remove { Up -= value; TryUnsubscribe(); } }
    public event KeyEventHandler KeyDown { add { EnsureSubscribed(); Down += value; } remove { Down -= value; TryUnsubscribe(); } }
 
-   // This must have the same lifetime as the event subscription
-   HookProc proc;
-   int hookHandle;
+   // Without being static, the proc handle is GC'd and the app crashes
+   // TODO: This means it's more of a singleton than I'd like
+   static HookProc proc;
+   static int hookHandle;
 
    int KeyProc(int code, int wParam, IntPtr lParam)
    {

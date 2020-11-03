@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -109,15 +110,16 @@ namespace FtlSaveScummer
 
             var after = FileFromLabel(e.Label);
             before.MoveTo(after.FullName);
+
+            string imageKey = null;
+
+            var match = Tagged.Match(e.Label);
+            if (match.Success) imageKey = match.Groups[1].Value;
+
+            saveList.Items[e.Item].ImageKey = imageKey;
+
          }
          catch { e.CancelEdit = true; }
-
-         string imageKey = null;
-
-         var match = Tagged.Match(e.Label);
-         if (match.Success) imageKey = match.Groups[1].Value;
-
-         saveList.Items[e.Item].ImageKey = imageKey;
       }
 
       void LoadState(string label)
@@ -217,5 +219,6 @@ namespace FtlSaveScummer
          SetTag(new List<string>{ tag });
       }
 
+      private void ClickOpenBackup(object sender, EventArgs e) => Process.Start(ourSaves.FullName);
    }
 }

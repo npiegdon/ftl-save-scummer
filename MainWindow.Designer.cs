@@ -41,6 +41,7 @@
             System.Windows.Forms.Button buttonIon;
             System.Windows.Forms.Button buttonLaser2;
             System.Windows.Forms.Button buttonLaser1;
+            System.Windows.Forms.Button buttonBackupFolder;
             KeyboardListener keyListener;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.saveList = new System.Windows.Forms.ListView();
@@ -61,6 +62,7 @@
             buttonIon = new System.Windows.Forms.Button();
             buttonLaser2 = new System.Windows.Forms.Button();
             buttonLaser1 = new System.Windows.Forms.Button();
+            buttonBackupFolder = new System.Windows.Forms.Button();
             keyListener = new KeyboardListener();
             ((System.ComponentModel.ISupportInitialize)(this.watcher)).BeginInit();
             this.SuspendLayout();
@@ -81,8 +83,127 @@
             labelTags.Location = new System.Drawing.Point(312, 53);
             labelTags.Name = "labelTags";
             labelTags.Size = new System.Drawing.Size(58, 13);
-            labelTags.TabIndex = 3;
+            labelTags.TabIndex = 4;
             labelTags.Text = "Quick tags";
+            // 
+            // buttonCleanup
+            // 
+            buttonCleanup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            buttonCleanup.Image = global::FtlSaveScummer.Properties.Resources.broom;
+            buttonCleanup.Location = new System.Drawing.Point(315, 676);
+            buttonCleanup.Name = "buttonCleanup";
+            buttonCleanup.Size = new System.Drawing.Size(64, 64);
+            buttonCleanup.TabIndex = 13;
+            buttonCleanup.UseVisualStyleBackColor = false;
+            buttonCleanup.Click += new System.EventHandler(this.CleanupClick);
+            // 
+            // buttonLoad
+            // 
+            buttonLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            buttonLoad.BackColor = System.Drawing.Color.DarkOliveGreen;
+            buttonLoad.Image = global::FtlSaveScummer.Properties.Resources.load;
+            buttonLoad.Location = new System.Drawing.Point(385, 676);
+            buttonLoad.Name = "buttonLoad";
+            buttonLoad.Size = new System.Drawing.Size(64, 64);
+            buttonLoad.TabIndex = 14;
+            buttonLoad.UseVisualStyleBackColor = false;
+            buttonLoad.Click += new System.EventHandler(this.LoadClick);
+            // 
+            // buttonDrone2
+            // 
+            buttonDrone2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonDrone2.Image = global::FtlSaveScummer.Properties.Resources.drone2;
+            buttonDrone2.Location = new System.Drawing.Point(385, 231);
+            buttonDrone2.Name = "buttonDrone2";
+            buttonDrone2.Size = new System.Drawing.Size(64, 48);
+            buttonDrone2.TabIndex = 12;
+            buttonDrone2.Tag = "drone2";
+            buttonDrone2.UseVisualStyleBackColor = true;
+            buttonDrone2.Click += new System.EventHandler(this.TagClick);
+            // 
+            // buttonDrone1
+            // 
+            buttonDrone1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonDrone1.Image = global::FtlSaveScummer.Properties.Resources.drone1;
+            buttonDrone1.Location = new System.Drawing.Point(315, 231);
+            buttonDrone1.Name = "buttonDrone1";
+            buttonDrone1.Size = new System.Drawing.Size(64, 48);
+            buttonDrone1.TabIndex = 11;
+            buttonDrone1.Tag = "drone1";
+            buttonDrone1.UseVisualStyleBackColor = true;
+            buttonDrone1.Click += new System.EventHandler(this.TagClick);
+            // 
+            // buttonBomb
+            // 
+            buttonBomb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonBomb.Image = global::FtlSaveScummer.Properties.Resources.bomb;
+            buttonBomb.Location = new System.Drawing.Point(385, 177);
+            buttonBomb.Name = "buttonBomb";
+            buttonBomb.Size = new System.Drawing.Size(64, 48);
+            buttonBomb.TabIndex = 10;
+            buttonBomb.Tag = "bomb";
+            buttonBomb.UseVisualStyleBackColor = true;
+            buttonBomb.Click += new System.EventHandler(this.TagClick);
+            // 
+            // buttonMissile
+            // 
+            buttonMissile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonMissile.Image = global::FtlSaveScummer.Properties.Resources.missile;
+            buttonMissile.Location = new System.Drawing.Point(315, 177);
+            buttonMissile.Name = "buttonMissile";
+            buttonMissile.Size = new System.Drawing.Size(64, 48);
+            buttonMissile.TabIndex = 9;
+            buttonMissile.Tag = "missile";
+            buttonMissile.UseVisualStyleBackColor = true;
+            buttonMissile.Click += new System.EventHandler(this.TagClick);
+            // 
+            // buttonBeam
+            // 
+            buttonBeam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonBeam.Image = global::FtlSaveScummer.Properties.Resources.beam;
+            buttonBeam.Location = new System.Drawing.Point(385, 123);
+            buttonBeam.Name = "buttonBeam";
+            buttonBeam.Size = new System.Drawing.Size(64, 48);
+            buttonBeam.TabIndex = 8;
+            buttonBeam.Tag = "beam";
+            buttonBeam.UseVisualStyleBackColor = true;
+            buttonBeam.Click += new System.EventHandler(this.TagClick);
+            // 
+            // buttonIon
+            // 
+            buttonIon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonIon.Image = global::FtlSaveScummer.Properties.Resources.ion;
+            buttonIon.Location = new System.Drawing.Point(315, 123);
+            buttonIon.Name = "buttonIon";
+            buttonIon.Size = new System.Drawing.Size(64, 48);
+            buttonIon.TabIndex = 7;
+            buttonIon.Tag = "ion";
+            buttonIon.UseVisualStyleBackColor = true;
+            buttonIon.Click += new System.EventHandler(this.TagClick);
+            // 
+            // buttonLaser2
+            // 
+            buttonLaser2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonLaser2.Image = global::FtlSaveScummer.Properties.Resources.laser2;
+            buttonLaser2.Location = new System.Drawing.Point(385, 69);
+            buttonLaser2.Name = "buttonLaser2";
+            buttonLaser2.Size = new System.Drawing.Size(64, 48);
+            buttonLaser2.TabIndex = 6;
+            buttonLaser2.Tag = "laser2";
+            buttonLaser2.UseVisualStyleBackColor = true;
+            buttonLaser2.Click += new System.EventHandler(this.TagClick);
+            // 
+            // buttonLaser1
+            // 
+            buttonLaser1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonLaser1.Image = global::FtlSaveScummer.Properties.Resources.laser1;
+            buttonLaser1.Location = new System.Drawing.Point(315, 69);
+            buttonLaser1.Name = "buttonLaser1";
+            buttonLaser1.Size = new System.Drawing.Size(64, 48);
+            buttonLaser1.TabIndex = 5;
+            buttonLaser1.Tag = "laser1";
+            buttonLaser1.UseVisualStyleBackColor = true;
+            buttonLaser1.Click += new System.EventHandler(this.TagClick);
             // 
             // saveList
             // 
@@ -125,7 +246,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pathBox.Location = new System.Drawing.Point(12, 12);
             this.pathBox.Name = "pathBox";
-            this.pathBox.Size = new System.Drawing.Size(437, 20);
+            this.pathBox.Size = new System.Drawing.Size(284, 20);
             this.pathBox.TabIndex = 2;
             this.pathBox.Text = "%userprofile%\\Documents\\My Games\\FasterThanLight";
             this.pathBox.TextChanged += new System.EventHandler(this.PathBox_TextChanged);
@@ -143,124 +264,16 @@
             this.watcher.SynchronizingObject = this;
             this.watcher.Changed += new System.IO.FileSystemEventHandler(this.FileChanged);
             // 
-            // buttonCleanup
+            // buttonBackupFolder
             // 
-            buttonCleanup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            buttonCleanup.Image = global::FtlSaveScummer.Properties.Resources.broom;
-            buttonCleanup.Location = new System.Drawing.Point(315, 676);
-            buttonCleanup.Name = "buttonCleanup";
-            buttonCleanup.Size = new System.Drawing.Size(64, 64);
-            buttonCleanup.TabIndex = 12;
-            buttonCleanup.UseVisualStyleBackColor = false;
-            buttonCleanup.Click += new System.EventHandler(this.CleanupClick);
-            // 
-            // buttonLoad
-            // 
-            buttonLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            buttonLoad.BackColor = System.Drawing.Color.DarkOliveGreen;
-            buttonLoad.Image = global::FtlSaveScummer.Properties.Resources.load;
-            buttonLoad.Location = new System.Drawing.Point(385, 676);
-            buttonLoad.Name = "buttonLoad";
-            buttonLoad.Size = new System.Drawing.Size(64, 64);
-            buttonLoad.TabIndex = 13;
-            buttonLoad.UseVisualStyleBackColor = false;
-            buttonLoad.Click += new System.EventHandler(this.LoadClick);
-            // 
-            // buttonDrone2
-            // 
-            buttonDrone2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonDrone2.Image = global::FtlSaveScummer.Properties.Resources.drone2;
-            buttonDrone2.Location = new System.Drawing.Point(385, 231);
-            buttonDrone2.Name = "buttonDrone2";
-            buttonDrone2.Size = new System.Drawing.Size(64, 48);
-            buttonDrone2.TabIndex = 11;
-            buttonDrone2.Tag = "drone2";
-            buttonDrone2.UseVisualStyleBackColor = true;
-            buttonDrone2.Click += new System.EventHandler(this.TagClick);
-            // 
-            // buttonDrone1
-            // 
-            buttonDrone1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonDrone1.Image = global::FtlSaveScummer.Properties.Resources.drone1;
-            buttonDrone1.Location = new System.Drawing.Point(315, 231);
-            buttonDrone1.Name = "buttonDrone1";
-            buttonDrone1.Size = new System.Drawing.Size(64, 48);
-            buttonDrone1.TabIndex = 10;
-            buttonDrone1.Tag = "drone1";
-            buttonDrone1.UseVisualStyleBackColor = true;
-            buttonDrone1.Click += new System.EventHandler(this.TagClick);
-            // 
-            // buttonBomb
-            // 
-            buttonBomb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonBomb.Image = global::FtlSaveScummer.Properties.Resources.bomb;
-            buttonBomb.Location = new System.Drawing.Point(385, 177);
-            buttonBomb.Name = "buttonBomb";
-            buttonBomb.Size = new System.Drawing.Size(64, 48);
-            buttonBomb.TabIndex = 9;
-            buttonBomb.Tag = "bomb";
-            buttonBomb.UseVisualStyleBackColor = true;
-            buttonBomb.Click += new System.EventHandler(this.TagClick);
-            // 
-            // buttonMissile
-            // 
-            buttonMissile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonMissile.Image = global::FtlSaveScummer.Properties.Resources.missile;
-            buttonMissile.Location = new System.Drawing.Point(315, 177);
-            buttonMissile.Name = "buttonMissile";
-            buttonMissile.Size = new System.Drawing.Size(64, 48);
-            buttonMissile.TabIndex = 8;
-            buttonMissile.Tag = "missile";
-            buttonMissile.UseVisualStyleBackColor = true;
-            buttonMissile.Click += new System.EventHandler(this.TagClick);
-            // 
-            // buttonBeam
-            // 
-            buttonBeam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonBeam.Image = global::FtlSaveScummer.Properties.Resources.beam;
-            buttonBeam.Location = new System.Drawing.Point(385, 123);
-            buttonBeam.Name = "buttonBeam";
-            buttonBeam.Size = new System.Drawing.Size(64, 48);
-            buttonBeam.TabIndex = 7;
-            buttonBeam.Tag = "beam";
-            buttonBeam.UseVisualStyleBackColor = true;
-            buttonBeam.Click += new System.EventHandler(this.TagClick);
-            // 
-            // buttonIon
-            // 
-            buttonIon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonIon.Image = global::FtlSaveScummer.Properties.Resources.ion;
-            buttonIon.Location = new System.Drawing.Point(315, 123);
-            buttonIon.Name = "buttonIon";
-            buttonIon.Size = new System.Drawing.Size(64, 48);
-            buttonIon.TabIndex = 6;
-            buttonIon.Tag = "ion";
-            buttonIon.UseVisualStyleBackColor = true;
-            buttonIon.Click += new System.EventHandler(this.TagClick);
-            // 
-            // buttonLaser2
-            // 
-            buttonLaser2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonLaser2.Image = global::FtlSaveScummer.Properties.Resources.laser2;
-            buttonLaser2.Location = new System.Drawing.Point(385, 69);
-            buttonLaser2.Name = "buttonLaser2";
-            buttonLaser2.Size = new System.Drawing.Size(64, 48);
-            buttonLaser2.TabIndex = 5;
-            buttonLaser2.Tag = "laser2";
-            buttonLaser2.UseVisualStyleBackColor = true;
-            buttonLaser2.Click += new System.EventHandler(this.TagClick);
-            // 
-            // buttonLaser1
-            // 
-            buttonLaser1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            buttonLaser1.Image = global::FtlSaveScummer.Properties.Resources.laser1;
-            buttonLaser1.Location = new System.Drawing.Point(315, 69);
-            buttonLaser1.Name = "buttonLaser1";
-            buttonLaser1.Size = new System.Drawing.Size(64, 48);
-            buttonLaser1.TabIndex = 4;
-            buttonLaser1.Tag = "laser1";
-            buttonLaser1.UseVisualStyleBackColor = true;
-            buttonLaser1.Click += new System.EventHandler(this.TagClick);
+            buttonBackupFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            buttonBackupFolder.Location = new System.Drawing.Point(315, 10);
+            buttonBackupFolder.Name = "buttonBackupFolder";
+            buttonBackupFolder.Size = new System.Drawing.Size(134, 23);
+            buttonBackupFolder.TabIndex = 3;
+            buttonBackupFolder.Text = "Open backup folder";
+            buttonBackupFolder.UseVisualStyleBackColor = true;
+            buttonBackupFolder.Click += new System.EventHandler(this.ClickOpenBackup);
             // 
             // keyListener
             // 
@@ -271,6 +284,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 752);
+            this.Controls.Add(buttonBackupFolder);
             this.Controls.Add(buttonCleanup);
             this.Controls.Add(buttonLoad);
             this.Controls.Add(labelTags);
