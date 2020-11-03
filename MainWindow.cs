@@ -14,12 +14,12 @@ namespace FtlSaveScummer
 {
    public partial class MainWindow : Form
    {
-      readonly DirectoryInfo ourSaves = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FtlSaveScummer"));
-      FileInfo SaveLocation => new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables(pathBox.Text), "continue.sav"));
-
-      DateTime lastCopy = DateTime.MinValue;
-
       readonly SoundPlayer loadSound = new SoundPlayer(Resources.bell);
+      readonly DirectoryInfo ourSaves = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "FtlSaveScummer"));
+
+      FileInfo SaveLocation => new FileInfo(Path.Combine(Environment.ExpandEnvironmentVariables(pathBox.Text), "continue.sav"));
+      DateTime lastCopy = DateTime.MinValue;
+      bool active = false;
 
       public MainWindow()
       {
@@ -39,8 +39,10 @@ namespace FtlSaveScummer
       static readonly Regex DefaultName = new Regex("^\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d$");
       static readonly Regex Tagged = new Regex("\\[(.+)\\]");
 
-      ListViewItem SelectedOrFirstNonDefault => saveList.SelectedItems.Count == 1 ? saveList.SelectedItems[0] : (from ListViewItem i in saveList.Items where !DefaultName.IsMatch(i.Text) select i).FirstOrDefault();
-      ListViewItem SelectedOrTop => saveList.SelectedItems.Count == 1 ? saveList.SelectedItems[0] : (saveList.Items.Count == 0 ? null : saveList.Items[0]);
+      // Both of these only use the selected entry when the window is currently active.  Otherwise (in
+      // headless/while-the-game-is-running mode), we should always just use the most recent entries.
+      ListViewItem SelectedOrFirstNonDefault => saveList.SelectedItems.Count == 1 && active ? saveList.SelectedItems[0] : (from ListViewItem i in saveList.Items where !DefaultName.IsMatch(i.Text) select i).FirstOrDefault();
+      ListViewItem SelectedOrTop => saveList.SelectedItems.Count == 1 && active ? saveList.SelectedItems[0] : (saveList.Items.Count == 0 ? null : saveList.Items[0]);
 
       void PopulateList()
       {
@@ -220,5 +222,15 @@ namespace FtlSaveScummer
       }
 
       private void ClickOpenBackup(object sender, EventArgs e) => Process.Start(ourSaves.FullName);
+
+      // Keep track of when our whole process goes active/inactive
+      protected override void WndProc(ref Message m)
+      {
+         const int WM_ACTIVATEAPP = 0x1C;
+         if (m.Msg == WM_ACTIVATEAPP) active = m.WParam != IntPtr.Zero;
+
+         base.WndProc(ref m);
+      }
+
    }
 }
