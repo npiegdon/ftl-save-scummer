@@ -141,8 +141,9 @@ namespace FtlSaveScummer
 
       void SaveList_KeyUp(object sender, KeyEventArgs e)
       {
-         if (e.KeyCode != Keys.Delete && e.KeyCode != Keys.Back) return;
          if (saveList.SelectedItems.Count != 1) return;
+         if (e.KeyCode == Keys.F2) { saveList.SelectedItems[0].BeginEdit(); return; }
+         if (e.KeyCode != Keys.Delete && e.KeyCode != Keys.Back) return;
 
          var file = FileFromLabel(saveList.SelectedItems[0].Text);
          FileSystem.DeleteFile(file.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
