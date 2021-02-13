@@ -29,8 +29,7 @@ namespace FtlSaveScummer
          Text += $" v{Application.ProductVersion.Substring(0, Application.ProductVersion.IndexOf('.'))}";
 
          void Add(string b) => iconSet.Images.Add(b, (Bitmap)Resources.ResourceManager.GetObject(b));
-         string[] iconList = { "laser1", "laser2", "ion", "beam", "missile", "bomb", "drone1", "drone2" };
-         foreach (var s in iconList) Add(s);
+         foreach (var t in tags) foreach (var s in t) Add(s);
       }
 
       FileInfo FileFromLabel(string label) => new FileInfo(Path.Combine(ourSaves.FullName, label.Replace(':', '_') + ".sav"));
@@ -136,7 +135,7 @@ namespace FtlSaveScummer
          loadSound.Play();
       }
 
-      void SaveList_ItemActivate(object sender, EventArgs e) => LoadState(saveList.SelectedItems[0].Text);
+      void SaveList_ItemActivate(object sender, EventArgs e) => LoadState(saveList.SelectedItems.Count == 1 ? saveList.SelectedItems[0].Text : null);
       void LoadClick(object sender, EventArgs e) => LoadState(SelectedOrFirstNonDefault?.Text ?? null);
 
       void SaveList_KeyUp(object sender, KeyEventArgs e)
@@ -159,22 +158,23 @@ namespace FtlSaveScummer
          PopulateList();
       }
 
-      void GlobalUp(object sender, KeyEventArgs e)
-      {
-         List<string>[,] tags = {
+      readonly List<string>[,] tags = {
             { new List<string>{ "laser1", "laser2" }, new List<string>{ "ion", "beam" }, new List<string>{ "missile", "bomb" }, new List<string>{ "drone1", "drone2" } },
-            { new List<string>{ }, new List<string>{ }, new List<string>{ }, new List<string>{ } },
-            { new List<string>{ }, new List<string>{ }, new List<string>{ }, new List<string>{ } }   
+            { new List<string>{ "scrap", "drones", "teleport", "cloak" }, new List<string>{ "clone", "mind", "hacking", "battery" }, new List<string>{ }, new List<string>{ } },
+            { new List<string>{ }, new List<string>{ }, new List<string>{ }, new List<string>{ } }
          };
 
+      void GlobalUp(object sender, KeyEventArgs e)
+      {
          switch (e.KeyCode)
          {
             case Keys.F20:
             case Keys.F21:
             case Keys.F22:
             case Keys.F23:
+               if (e.Shift && e.Control) break;
                int c = e.KeyCode - Keys.F20;
-               int r = 0 + (e.Shift ? 1 : 0) + (e.Control ? 1 : 0) - (e.Shift && e.Control ? 1 : 0);
+               int r = 0 + (e.Shift ? 1 : 0) + (e.Control ? 2 : 0);
 
                var tagList = tags[r, c];
                if (tagList.Count == 0) return;

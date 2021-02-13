@@ -114,6 +114,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="appIcon.ico" />
+    <None Include="Resources\sectors.png" />
+    <None Include="Resources\cloak.png" />
+    <None Include="Resources\drones.png" />
+    <None Include="Resources\teleport.png" />
+    <None Include="Resources\scrap.png" />
+    <None Include="Resources\clone.png" />
+    <None Include="Resources\mind.png" />
+    <None Include="Resources\hacking.png" />
+    <None Include="Resources\battery.png" />
     <None Include="Resources\bell.wav" />
     <None Include="Resources\load.png" />
     <None Include="Resources\broom.png" />

@@ -63,6 +63,16 @@ namespace FtlSaveScummer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap battery {
+            get {
+                object obj = ResourceManager.GetObject("battery", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap beam {
             get {
                 object obj = ResourceManager.GetObject("beam", resourceCulture);
@@ -102,6 +112,26 @@ namespace FtlSaveScummer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cloak {
+            get {
+                object obj = ResourceManager.GetObject("cloak", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap clone {
+            get {
+                object obj = ResourceManager.GetObject("clone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap drone1 {
             get {
                 object obj = ResourceManager.GetObject("drone1", resourceCulture);
@@ -115,6 +145,26 @@ namespace FtlSaveScummer.Properties {
         internal static System.Drawing.Bitmap drone2 {
             get {
                 object obj = ResourceManager.GetObject("drone2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap drones {
+            get {
+                object obj = ResourceManager.GetObject("drones", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hacking {
+            get {
+                object obj = ResourceManager.GetObject("hacking", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -162,9 +212,49 @@ namespace FtlSaveScummer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap mind {
+            get {
+                object obj = ResourceManager.GetObject("mind", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap missile {
             get {
                 object obj = ResourceManager.GetObject("missile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap scrap {
+            get {
+                object obj = ResourceManager.GetObject("scrap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sectors {
+            get {
+                object obj = ResourceManager.GetObject("sectors", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap teleport {
+            get {
+                object obj = ResourceManager.GetObject("teleport", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
